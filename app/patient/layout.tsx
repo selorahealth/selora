@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Sidebar from '@/components/layout/Sidebar'
 import Topbar from '@/components/layout/Topbar'
+import EmergencyContactModal from '@/components/patient/EmergencyContactModal'
 
 export default async function DashboardLayout({
     children,
@@ -22,12 +23,38 @@ export default async function DashboardLayout({
         .eq('id', user.id)
         .single()
 
-    const role = userData?.role || user.user_metadata.role || 'patient'
+    const role = userData?.role || 'patient'
+
+    // Fetch patient profile and emergency contacts
+    let requiresEmergencyContact = false;
+    let patientId = null;
+
+    if (role === 'patient') {
+        const { data: patientProfile } = await supabase
+            .from('patient_profiles')
+            .select('id')
+            .eq('user_id', user.id)
+            .single()
+
+        if (patientProfile) {
+            patientId = patientProfile.id;
+            const { count } = await supabase
+                .from('emergency_contacts')
+                .select('*', { count: 'exact', head: true })
+                .eq('patient_id', patientId)
+
+            requiresEmergencyContact = count === 0;
+        }
+    }
 
     return (
-        <div className="min-h-screen bg-[#0A0B14] flex text-[#A0A4C8]">
+        <div className="min-h-screen bg-[#0A0B14] flex text-[#A0A4C8] relative">
+            {requiresEmergencyContact && patientId && (
+                <EmergencyContactModal patientId={patientId} />
+            )}
+            
             <Sidebar role={role} />
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className={`flex-1 flex flex-col min-w-0 ${requiresEmergencyContact ? 'pointer-events-none blur-sm' : ''}`}>
                 <Topbar user={user} role={role} />
                 <main className="flex-1 p-6 overflow-y-auto">
                     {/* Ambient glow for dashboards */}

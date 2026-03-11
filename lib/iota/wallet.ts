@@ -4,7 +4,7 @@ import { createCipheriv, createDecipheriv, randomBytes } from 'crypto'
 const ALGORITHM = 'aes-256-cbc'
 
 // must be 32 bytes
-const ENCRYPTION_KEY = Buffer.from(process.env.WALLET_ENCRYPTION_KEY!, 'hex')
+const ENCRYPTION_KEY = Buffer.from(process.env.WALLET_ENCRYPTION_KEY || '0000000000000000000000000000000000000000000000000000000000000000', 'hex')
 
 // ── Encrypt seed/private key before storing ──
 export function encryptSeed(seed: string): string {

@@ -9,15 +9,16 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                blue: '#6183FF',
-                mint: '#5DFFAD',
-                lime: '#C7FF45',
-                dark: '#0A0B14',
-                dark2: '#111224',
-                dark3: '#1A1C35',
-                dark4: '#232540',
-                muted: '#6B6F8E',
-                body: '#A0A4C8',
+                blue: 'var(--blue)',
+                mint: 'var(--mint)',
+                lime: 'var(--lime)',
+                dark: 'var(--dark)',
+                dark2: 'var(--dark2)',
+                dark3: 'var(--dark3)',
+                dark4: 'var(--dark4)',
+                muted: 'var(--muted)',
+                text: 'var(--text)',
+                body: 'var(--body)',
             },
             fontFamily: {
                 sora: ['var(--font-sora)', 'sans-serif'],

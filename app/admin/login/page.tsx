@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { JSX } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowRight, Lock, Server } from 'lucide-react'
 
@@ -48,11 +49,7 @@ export default function AdminLoginPage(): JSX.Element {
                 {/* Logo area */}
                 <div className="text-center mb-8">
                     <div className="flex items-center justify-center gap-2 mb-3">
-                        <div className="w-8 h-8 rounded-md bg-indigo-600 p-[2px] shadow-sm">
-                            <div className="w-full h-full bg-white rounded-sm flex items-center justify-center">
-                                <div className="w-3 h-3 rounded-sm bg-indigo-600" />
-                            </div>
-                        </div>
+                        <Image src="/logo.png" alt="Selora Logo" width={32} height={32} className="object-contain" />
                         <span className="font-sora text-2xl font-bold tracking-tight text-slate-900">
                             Selora<span className="text-indigo-600 text-[10px] align-top leading-none ml-1 uppercase">Systems</span>
                         </span>
@@ -88,6 +85,7 @@ export default function AdminLoginPage(): JSX.Element {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required
+                                autoComplete="off"
                                 placeholder="sysadmin@selora.io"
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-sm placeholder-slate-400 outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-sm"
                             />
@@ -104,6 +102,7 @@ export default function AdminLoginPage(): JSX.Element {
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 required
+                                autoComplete="new-password"
                                 placeholder="••••••••"
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-sm placeholder-slate-400 outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-sm"
                             />
