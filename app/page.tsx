@@ -6,10 +6,12 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronRight, Moon, Sun, Monitor, Plus, Command, Calendar, ListTodo, Shield, Search, CheckCircle2, ShieldAlert, HeartPulse, QrCode, Lock, Database } from 'lucide-react'
 import { useTheme } from '@/components/providers/ThemeProvider'
+import { WaitlistModal } from '@/components/WaitlistForm'
 
 export default function Home() {
     const { theme, setTheme } = useTheme()
     const [themeMenuOpen, setThemeMenuOpen] = useState(false)
+    const [isWaitlistOpen, setIsWaitlistOpen] = useState(false)
 
     return (
         <div className="min-h-screen bg-dark text-text font-sans selection:bg-blue/30 selection:text-white relative overflow-hidden transition-colors duration-300">
@@ -80,12 +82,12 @@ export default function Home() {
                             >
                                 Log In
                             </Link>
-                            <Link 
-                                href="/signup" 
+                            <button 
+                                onClick={() => setIsWaitlistOpen(true)}
                                 className="hidden sm:inline-flex items-center justify-center gap-2 px-5 py-2 text-[13px] font-bold text-dark bg-mint rounded-full hover:bg-mint/90 transition-colors"
                             >
                                 Join Waitlist <ArrowRight className="w-4 h-4" />
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -132,12 +134,12 @@ export default function Home() {
                         transition={{ duration: 0.6, delay: 0.3 }}
                         className="flex flex-col sm:flex-row items-center justify-center gap-4"
                     >
-                        <Link 
-                            href="/signup" 
+                        <button 
+                            onClick={() => setIsWaitlistOpen(true)}
                             className="w-full sm:w-auto px-8 py-4 bg-mint text-dark text-sm font-bold rounded-xl hover:bg-mint/90 transition-all text-center uppercase tracking-wide font-sora shadow-[0_0_20px_rgba(93,255,173,0.3)]"
                         >
                             Join the Waitlist — It's Free
-                        </Link>
+                        </button>
                         <Link 
                             href="#demo" 
                             className="w-full sm:w-auto px-8 py-4 bg-dark3 text-text border border-border text-sm font-bold rounded-xl hover:bg-dark4 transition-all flex items-center justify-center gap-2 uppercase tracking-wide font-sora"
@@ -387,12 +389,12 @@ export default function Home() {
                     <p className="text-body text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
                         Nigerian patients carry their health history in their heads — or they don't carry it at all. They repeat the same tests. They arrive in emergencies and no one knows what medications they take. This is because the technology was never built around the patient.<br/><br/><span className="text-mint font-bold">Selora is built around you.</span>
                     </p>
-                    <Link 
-                        href="/signup" 
+                    <button 
+                        onClick={() => setIsWaitlistOpen(true)}
                         className="inline-flex px-10 py-5 bg-text text-dark text-lg font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wide font-sora shadow-[0_0_30px_rgba(255,255,255,0.2)]"
                     >
                         Join the Waitlist
-                    </Link>
+                    </button>
                     <div className="mt-4 text-sm text-muted font-sora">Free. Takes 90 seconds. No card required.</div>
                 </section>
 
@@ -443,6 +445,8 @@ export default function Home() {
                     <p className="flex items-center gap-1 font-sora">Built with 🩵 on IOTA Rebased</p>
                 </div>
             </footer>
+
+            <WaitlistModal isOpen={isWaitlistOpen} onClose={() => setIsWaitlistOpen(false)} />
         </div>
     )
 }
