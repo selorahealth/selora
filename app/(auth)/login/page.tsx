@@ -5,6 +5,7 @@ import type { JSX } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { ArrowRight } from 'lucide-react'
 
 function LoginPage(): JSX.Element {
     const router = useRouter()
@@ -20,7 +21,7 @@ function LoginPage(): JSX.Element {
 
         const supabase = createClient()
 
-        const { data, error: authError } = await supabase.auth.signInWithPassword({
+        const { error: authError } = await supabase.auth.signInWithPassword({
             email,
             password,
         })
@@ -31,15 +32,7 @@ function LoginPage(): JSX.Element {
             return
         }
 
-        // Get user role and redirect to correct dashboard
-        const { data: userData } = await supabase
-            .from('users')
-            .select('role')
-            .eq('id', data.user.id)
-            .single()
-
-        const role = userData?.role || 'patient'
-        router.push(`/${role}`)
+        router.push('/patient')
         router.refresh()
     }
 
@@ -47,18 +40,23 @@ function LoginPage(): JSX.Element {
         <div>
             {/* Logo */}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 mb-3">
-                    <span className="font-sora text-3xl font-black text-white tracking-tight">
-                        Selora<span className="text-[#5DFFAD]">.</span>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 via-pink-500 to-purple-600 p-[2px]">
+                        <div className="w-full h-full bg-[#0A0A0A] rounded-full flex items-center justify-center">
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-orange-500 to-purple-500" />
+                        </div>
+                    </div>
+                    <span className="font-sora text-3xl font-black tracking-tight text-white">
+                        Selora<span className="text-purple-500">.</span>
                     </span>
                 </div>
-                <p className="text-[#A0A4C8] text-sm">Your health story, everywhere you go.</p>
+                <p className="text-gray-400 text-sm">Patient Portal Access</p>
             </div>
 
             {/* Card */}
-            <div className="bg-[#111224] border border-[rgba(97,131,255,0.15)] rounded-2xl p-8">
-                <h1 className="font-sora text-xl font-700 text-white mb-1">Welcome back</h1>
-                <p className="text-[#6B6F8E] text-sm mb-6">Sign in to your Selora account</p>
+            <div className="bg-[#111111] border border-gray-800 rounded-2xl p-8 shadow-2xl">
+                <h1 className="font-sora text-xl font-bold text-white mb-1">Welcome back</h1>
+                <p className="text-gray-500 text-sm mb-6">Sign in to your Selora health workspace</p>
 
                 {error && (
                     <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl p-3 mb-4">
@@ -68,7 +66,7 @@ function LoginPage(): JSX.Element {
 
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>
-                        <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
+                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wide">
                             Email
                         </label>
                         <input
@@ -77,37 +75,42 @@ function LoginPage(): JSX.Element {
                             onChange={e => setEmail(e.target.value)}
                             required
                             placeholder="you@example.com"
-                            className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm placeholder-[#6B6F8E] outline-none focus:border-[#6183FF] transition-colors"
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none focus:border-purple-500 transition-colors"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
-                            Password
-                        </label>
+                        <div className="flex justify-between items-center mb-1.5">
+                            <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide">
+                                Password
+                            </label>
+                            <Link href="#" className="text-xs text-purple-400 hover:text-purple-300 transition-colors">Forgot?</Link>
+                        </div>
                         <input
                             type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             required
                             placeholder="••••••••"
-                            className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm placeholder-[#6B6F8E] outline-none focus:border-[#6183FF] transition-colors"
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none focus:border-purple-500 transition-colors"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-[#6183FF] hover:bg-[#7394FF] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm rounded-xl py-3 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                        className="w-full bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold text-sm rounded-xl py-3.5 mt-2 transition-all duration-200 flex items-center justify-center gap-2"
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Signing in...' : (
+                            <>Sign In <ArrowRight className="w-4 h-4" /></>
+                        )}
                     </button>
                 </form>
 
-                <div className="mt-6 pt-6 border-t border-[rgba(97,131,255,0.1)] text-center">
-                    <p className="text-[#6B6F8E] text-sm">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/signup" className="text-[#6183FF] hover:text-[#7394FF] font-medium transition-colors">
+                <div className="mt-6 pt-6 border-t border-gray-800/60 text-center">
+                    <p className="text-gray-500 text-sm">
+                        Don&apos;t have a patient account?{' '}
+                        <Link href="/signup" className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
                             Create one
                         </Link>
                     </p>

@@ -95,7 +95,6 @@ export async function POST(request: NextRequest) {
                     hospital_name: fullName,
                     wallet_address: address,
                     wallet_seed_encrypted: encryptedSeed,
-                    verified: false, // must be approved by admin
                 })
 
         } else if (role === 'researcher') {
@@ -105,7 +104,6 @@ export async function POST(request: NextRequest) {
                     user_id: userId,
                     full_name: fullName,
                     institution: '',
-                    verified: false,
                 })
         }
 

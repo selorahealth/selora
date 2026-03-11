@@ -4,13 +4,7 @@ import { useState } from 'react'
 import type { JSX } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
-
-const ROLES = [
-    { value: 'patient', label: 'Patient', icon: '🧑‍⚕️', desc: 'Own and share your medical records' },
-    { value: 'hospital', label: 'Hospital', icon: '🏥', desc: 'Access patient records via QR scan' },
-    { value: 'researcher', label: 'Researcher', icon: '🔬', desc: 'Access consented health datasets' },
-]
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 const COUNTRIES = [
     { code: 'NG', name: 'Nigeria', currency: 'NGN' },
@@ -23,8 +17,6 @@ const COUNTRIES = [
 
 export default function SignupPage(): JSX.Element {
     const router = useRouter()
-    const [step, setStep] = useState<'role' | 'details'>('role')
-    const [role, setRole] = useState('')
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -45,7 +37,7 @@ export default function SignupPage(): JSX.Element {
             body: JSON.stringify({
                 email,
                 password,
-                role,
+                role: 'patient',
                 fullName,
                 country,
                 currency: selectedCountry?.currency || 'NGN',
@@ -65,151 +57,120 @@ export default function SignupPage(): JSX.Element {
 
     return (
         <div>
+            {/* Logo */}
             <div className="text-center mb-8">
-                <span className="font-sora text-3xl font-black text-white tracking-tight">
-                    Selora<span className="text-[#5DFFAD]">.</span>
-                </span>
-                <p className="text-[#A0A4C8] text-sm mt-1">Create your account</p>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 via-pink-500 to-purple-600 p-[2px]">
+                        <div className="w-full h-full bg-[#0A0A0A] rounded-full flex items-center justify-center">
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-orange-500 to-purple-500" />
+                        </div>
+                    </div>
+                    <span className="font-sora text-3xl font-black tracking-tight text-white">
+                        Selora<span className="text-purple-500">.</span>
+                    </span>
+                </div>
+                <p className="text-gray-400 text-sm">Create your health vault</p>
             </div>
 
-            <div className="bg-[#111224] border border-[rgba(97,131,255,0.15)] rounded-2xl p-8">
+            <div className="bg-[#111111] border border-gray-800 rounded-2xl p-8 shadow-2xl">
+                <Link
+                    href="/"
+                    className="text-gray-500 text-sm mb-6 inline-flex items-center gap-1 hover:text-white transition-colors"
+                >
+                    <ArrowLeft className="w-4 h-4" /> Back to home
+                </Link>
 
-                {/* STEP 1 — Role */}
-                {step === 'role' && (
+                <h1 className="font-sora text-xl font-bold text-white mb-1">Patient Registration</h1>
+                <p className="text-gray-500 text-sm mb-6">
+                    Join Selora to securely manage your medical history.
+                </p>
+
+                {error && (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl p-3 mb-4">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSignup} className="space-y-4">
                     <div>
-                        <h1 className="font-sora text-xl font-bold text-white mb-1">Who are you?</h1>
-                        <p className="text-[#6B6F8E] text-sm mb-6">Choose the account type that fits you</p>
+                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wide">
+                            Full Name
+                        </label>
+                        <input
+                            type="text"
+                            value={fullName}
+                            onChange={e => setFullName(e.target.value)}
+                            required
+                            placeholder="Kwame Osei"
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none focus:border-purple-500 transition-colors"
+                        />
+                    </div>
 
-                        <div className="space-y-3">
-                            {ROLES.map(r => (
-                                <button
-                                    key={r.value}
-                                    onClick={() => setRole(r.value)}
-                                    className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 text-left ${role === r.value
-                                        ? 'border-[#6183FF] bg-[rgba(97,131,255,0.1)]'
-                                        : 'border-[rgba(97,131,255,0.1)] bg-[#1A1C35] hover:border-[rgba(97,131,255,0.3)]'
-                                        }`}
-                                >
-                                    <span className="text-2xl">{r.icon}</span>
-                                    <div>
-                                        <div className="text-white text-sm font-medium">{r.label}</div>
-                                        <div className="text-[#6B6F8E] text-xs mt-0.5">{r.desc}</div>
-                                    </div>
-                                    {role === r.value && (
-                                        <div className="ml-auto w-5 h-5 rounded-full bg-[#6183FF] flex items-center justify-center text-white text-xs">✓</div>
-                                    )}
-                                </button>
+                    <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wide">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            required
+                            placeholder="you@example.com"
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none focus:border-purple-500 transition-colors"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wide">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            required
+                            minLength={8}
+                            placeholder="At least 8 characters"
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none focus:border-purple-500 transition-colors"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wide">
+                            Country
+                        </label>
+                        <select
+                            value={country}
+                            onChange={e => setCountry(e.target.value)}
+                            className="w-full bg-[#0A0A0A] border border-gray-800 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition-colors appearance-none"
+                        >
+                            {COUNTRIES.map(c => (
+                                <option key={c.code} value={c.code}>
+                                    {c.name} ({c.currency})
+                                </option>
                             ))}
-                        </div>
-
-                        <button
-                            onClick={() => setStep('details')}
-                            disabled={!role}
-                            className="w-full mt-6 bg-[#6183FF] hover:bg-[#7394FF] disabled:opacity-30 disabled:cursor-not-allowed text-white font-medium text-sm rounded-xl py-3 transition-all duration-200 hover:-translate-y-0.5"
-                        >
-                            Continue
-                        </button>
+                        </select>
                     </div>
-                )}
 
-                {/* STEP 2 — Details */}
-                {step === 'details' && (
-                    <div>
-                        <button
-                            onClick={() => setStep('role')}
-                            className="text-[#6B6F8E] text-sm mb-4 flex items-center gap-1 hover:text-white transition-colors"
-                        >
-                            ← Back
-                        </button>
+                    <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+                        By registering, you agree to our <a href="#" className="text-purple-400 hover:text-purple-300">Terms of Service</a> and acknowledge our <a href="#" className="text-purple-400 hover:text-purple-300">Privacy Policy</a> governing zero-knowledge health data.
+                    </p>
 
-                        <h1 className="font-sora text-xl font-bold text-white mb-1">Your details</h1>
-                        <p className="text-[#6B6F8E] text-sm mb-6">
-                            Signing up as{' '}
-                            <span className="text-[#6183FF] font-medium capitalize">{role}</span>
-                        </p>
-
-                        {error && (
-                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl p-3 mb-4">
-                                {error}
-                            </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold text-sm rounded-xl py-3.5 mt-2 transition-all duration-200 flex items-center justify-center gap-2"
+                    >
+                        {loading ? 'Creating secure vault...' : (
+                            <>Create Account <ArrowRight className="w-4 h-4" /></>
                         )}
+                    </button>
+                </form>
 
-                        <form onSubmit={handleSignup} className="space-y-4">
-                            <div>
-                                <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
-                                    {role === 'hospital' ? 'Hospital Name' : 'Full Name'}
-                                </label>
-                                <input
-                                    type="text"
-                                    value={fullName}
-                                    onChange={e => setFullName(e.target.value)}
-                                    required
-                                    placeholder={role === 'hospital' ? 'Lagos Island General Hospital' : 'Amaka Osei'}
-                                    className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm placeholder-[#6B6F8E] outline-none focus:border-[#6183FF] transition-colors"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
-                                    placeholder="you@example.com"
-                                    className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm placeholder-[#6B6F8E] outline-none focus:border-[#6183FF] transition-colors"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    required
-                                    minLength={8}
-                                    placeholder="At least 8 characters"
-                                    className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm placeholder-[#6B6F8E] outline-none focus:border-[#6183FF] transition-colors"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-xs font-medium text-[#A0A4C8] mb-1.5 uppercase tracking-wide">
-                                    Country
-                                </label>
-                                <select
-                                    value={country}
-                                    onChange={e => setCountry(e.target.value)}
-                                    className="w-full bg-[#1A1C35] border border-[rgba(97,131,255,0.15)] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#6183FF] transition-colors"
-                                >
-                                    {COUNTRIES.map(c => (
-                                        <option key={c.code} value={c.code}>
-                                            {c.name} ({c.currency})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-[#6183FF] hover:bg-[#7394FF] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm rounded-xl py-3 transition-all duration-200 hover:-translate-y-0.5"
-                            >
-                                {loading ? 'Creating account...' : 'Create Account'}
-                            </button>
-                        </form>
-                    </div>
-                )}
-
-                <div className="mt-6 pt-6 border-t border-[rgba(97,131,255,0.1)] text-center">
-                    <p className="text-[#6B6F8E] text-sm">
+                <div className="mt-6 pt-6 border-t border-gray-800/60 text-center">
+                    <p className="text-gray-500 text-sm">
                         Already have an account?{' '}
-                        <Link href="/login" className="text-[#6183FF] hover:text-[#7394FF] font-medium transition-colors">
+                        <Link href="/login" className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
                             Sign in
                         </Link>
                     </p>

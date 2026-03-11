@@ -10,11 +10,12 @@ export default function AuthLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="min-h-screen bg-[#0A0B14] flex items-center justify-center p-4">
-            {/* Ambient background glow */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#6183FF] opacity-[0.06] blur-[120px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#5DFFAD] opacity-[0.05] blur-[120px]" />
+        <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
+            {/* Alien AI Theme Ambient Glow */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] rounded-full bg-purple-600 opacity-[0.05] blur-[150px]" />
+                <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] rounded-full bg-orange-500 opacity-[0.03] blur-[150px]" />
+                <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] rounded-full bg-pink-500 opacity-[0.03] blur-[120px]" />
             </div>
             <div className="relative z-10 w-full max-w-md">
                 {children}

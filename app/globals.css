@@ -1,19 +1,35 @@
 
 @import "tailwindcss";
-@config "../tailwind.config.ts";
+
+@theme {
+  --color-blue: #6183FF;
+  --color-mint: #5DFFAD;
+  --color-lime: #C7FF45;
+  --color-dark: #0A0B14;
+  --color-dark2: #111224;
+  --color-dark3: #1A1C35;
+  --color-dark4: #232540;
+  --color-muted: #6B6F8E;
+  --color-text: #E8EAFF;
+  --color-body: #A0A4C8;
+  --color-border: rgba(97, 131, 255, 0.15);
+
+  --font-sora: var(--font-sora), sans-serif;
+  --font-sans: var(--font-sora), sans-serif;
+}
 
 :root {
-    --blue: #6183FF;
-    --mint: #5DFFAD;
-    --lime: #C7FF45;
-    --dark: #0A0B14;
-    --dark2: #111224;
-    --dark3: #1A1C35;
-    --dark4: #232540;
-    --muted: #6B6F8E;
-    --text: #E8EAFF;
-    --text2: #A0A4C8;
-    --border: rgba(97, 131, 255, 0.15);
+  --blue: #6183FF;
+  --mint: #5DFFAD;
+  --lime: #C7FF45;
+  --dark: #0A0B14;
+  --dark2: #111224;
+  --dark3: #1A1C35;
+  --dark4: #232540;
+  --muted: #6B6F8E;
+  --text: #E8EAFF;
+  --text2: #A0A4C8;
+  --border: rgba(97, 131, 255, 0.15);
 }
 
 * {
