@@ -11,6 +11,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  output: process.env.VERCEL ? undefined : "standalone",
   async headers() {
     return [
       {
