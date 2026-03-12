@@ -7,15 +7,18 @@ export async function middleware(request: NextRequest) {
         return new NextResponse(null, { status: 405, statusText: 'Method Not Allowed' });
     }
 
+    // Bypass middleware on prefetch requests, which can crash on Vercel's Edge network
+    if (request.headers.has('x-middleware-prefetch') || request.headers.has('x-invoke-path')) {
+        return NextResponse.next();
+    }
+
     if (process.env.NODE_ENV === 'production' && request.nextUrl.protocol === 'http:') {
         const url = request.nextUrl.clone()
         url.protocol = 'https:'
         return NextResponse.redirect(url)
     }
 
-    const nonceBytes = new Uint8Array(16);
-    crypto.getRandomValues(nonceBytes);
-    const nonce = btoa(String.fromCharCode(...nonceBytes));
+    const nonce = crypto.randomUUID();
     const cspHeader = `
         default-src 'self';
         script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
@@ -40,9 +43,18 @@ export async function middleware(request: NextRequest) {
     });
     supabaseResponse.headers.set('Content-Security-Policy', cspHeader);
 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    // If environment variables are missing, prevent the middleware from crashing the app
+    if (!supabaseUrl || !supabaseKey) {
+        console.error('Middleware: Supabase environment variables missing!');
+        return supabaseResponse;
+    }
+
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseKey,
         {
             cookies: {
                 getAll() {
