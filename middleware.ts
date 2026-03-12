@@ -13,7 +13,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url)
     }
 
-    const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+    const nonceBytes = new Uint8Array(16);
+    crypto.getRandomValues(nonceBytes);
+    const nonce = btoa(String.fromCharCode(...nonceBytes));
     const cspHeader = `
         default-src 'self';
         script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
