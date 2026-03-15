@@ -43,7 +43,7 @@ export default function InsurerLandingPage() {
                 className="relative z-50 flex items-center justify-between px-8 py-6 max-w-[1400px] mx-auto bg-white/80 backdrop-blur-md border-b border-gray-100"
             >
                 <div className="flex items-center gap-2">
-                    <Image src="/logo.png" alt="Selora Logo" width={24} height={24} className="object-contain" />
+                    <Image src="/logo.png" alt="Selora Logo" width={32} height={32} className="object-contain" />
                     <span className="font-sora text-xl font-bold tracking-tight text-[#0A0B14]">
                         Selora<span className="text-blue text-xs align-top leading-none ml-1">PAYER</span>
                     </span>

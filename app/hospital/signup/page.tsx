@@ -65,15 +65,11 @@ export default function HospitalSignupPage(): JSX.Element {
 
             <div className="relative z-10 w-full max-w-xl">
                 {/* Logo area */}
-                <div className="text-center mb-10">
+                <div className="text-center mb-8">
                     <div className="flex items-center justify-center gap-2 mb-3">
-                        <div className="w-8 h-8 rounded-md bg-blue-600 p-[2px] shadow-sm">
-                            <div className="w-full h-full bg-white rounded-sm flex items-center justify-center">
-                                <div className="w-3 h-3 rounded-sm bg-blue-600" />
-                            </div>
-                        </div>
+                        <Image src="/logo.png" alt="Selora Logo" width={32} height={32} className="object-contain" />
                         <span className="font-sora text-2xl font-bold tracking-tight text-slate-900">
-                            Selora<span className="text-blue-600 text-[10px] align-top leading-none ml-1 uppercase">Partners</span>
+                            Selora<span className="text-blue-600 text-[10px] align-top leading-none ml-1 uppercase">Hospital</span>
                         </span>
                     </div>
                 </div>
