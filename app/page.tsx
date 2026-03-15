@@ -24,7 +24,7 @@ export default function Home() {
                 <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
                     {/* Logo Area */}
                     <div className="flex items-center gap-2">
-                        <Image src="/logo.png" alt="Selora Logo" width={20} height={20} className="object-contain" />
+                        <Image src="/logo.png" alt="Selora Logo" width={32} height={32} className="object-contain" />
                         <span className="font-sora font-black text-xl tracking-tight text-white">
                             Selora<span className="text-[#5DFFAD]">.</span>
                         </span>
@@ -36,7 +36,7 @@ export default function Home() {
                         <Link href="#how-it-works" className="hover:text-text transition-colors">How It Works</Link>
                         <Link href="#pricing" className="hover:text-text transition-colors">Pricing</Link>
                         <Link href="/hospital" className="hover:text-text transition-colors">For Hospitals</Link>
-                        <Link href="/research" className="hover:text-text transition-colors">For Researchers</Link>
+                        <Link href="/researcher" className="hover:text-text transition-colors">For Researchers</Link>
                         <Link href="/insurers" className="hover:text-text transition-colors">For Insurers</Link>
                     </div>
 
@@ -335,7 +335,7 @@ export default function Home() {
                             
                             <h3 className="font-sora text-2xl font-bold text-mint mb-2">Premium</h3>
                             <div className="flex items-baseline gap-2 mb-2">
-                                <span className="text-4xl font-bold text-white">₦900</span>
+                                <span className="text-4xl font-bold text-white">₦1000</span>
                                 <span className="text-body">/month</span>
                             </div>
                             <div className="text-xs text-mint/70 mb-8 font-medium">Normally ₦1,500. Lock in forever.</div>
@@ -419,7 +419,7 @@ export default function Home() {
                         <ul className="space-y-3 text-[13px] text-body">
                             <li><Link href="/" className="hover:text-blue transition-colors">For Patients</Link></li>
                             <li><Link href="/hospital" className="hover:text-mint transition-colors">For Hospitals</Link></li>
-                            <li><Link href="/research" className="hover:text-lime transition-colors">For Researchers</Link></li>
+                            <li><Link href="/researcher" className="hover:text-lime transition-colors">For Researchers</Link></li>
                             <li><Link href="/insurers" className="hover:text-blue transition-colors">For Insurers</Link></li>
                         </ul>
                     </div>
